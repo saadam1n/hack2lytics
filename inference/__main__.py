@@ -17,7 +17,7 @@ from transformers import pipeline
 messages = [
     {"role": "user", "content": "Who are you?"},
 ]
-pipe = pipeline("text-generation", model="deepseek-ai/DeepSeek-R1", trust_remote_code=True)
+pipe = pipeline("text-generation", model="deepseek-ai/DeepSeek-R1-Distill-Llama-8B ", trust_remote_code=True)
 
 result = pipe(messages)
 print(result)
