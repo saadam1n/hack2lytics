@@ -5,9 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "build-webpack": "npx webpack --config webpack.config.js",
-    "build-templates": "npx nunjucks-precompile templates/client >> dist/client/js/templates.js",
     "build-css": "npx postcss app/css/*.css --dir dist/client/css/",
-    "build-client": "npx concurrently npm:build-webpack npm:build-css npm:build-templates",
+    "build-client": "npx concurrently npm:build-webpack npm:build-css",
     "build-server": "npx tsc",
     "build-all": "npx concurrently npm:build-client npm:build-server",
     "watch-webpack": "npx webpack --watch --config webpack.config.js",
@@ -23,7 +22,9 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@prisma/client": "5.22.0",
+    "@types/busboy": "^1.5.4",
     "axios": "1.7.7",
+    "busboy": "^1.6.0",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
     "dotenv": "16.4.5",
@@ -31,12 +32,13 @@
     "express-rate-limit": "7.4.1",
     "joi": "17.13.3",
     "nunjucks": "3.2.4",
-    "uuid": "11.0.2",
+    "uuid": "^11.0.2",
     "winston": "3.15.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "1.4.7",
     "@types/cors": "2.8.17",
+    "@types/mongoose": "^5.11.96",
     "@types/node": "20.14.9",
     "@types/nunjucks": "3.2.6",
     "@typescript-eslint/eslint-plugin": "7.15.0",

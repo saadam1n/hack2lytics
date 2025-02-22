@@ -30,7 +30,20 @@ if (!process.env.CORS_ORIGIN) {
     process.exit(1);
 }
 
+//mongoDB connection string
+if (!process.env.DB_CONNECT) {
+    console.error("DB_CONNECT not set");
+    process.exit(1);
+}
+
+//BACKEND_URL is a string
+if (!process.env.BACKEND_URL) {
+    console.error("BACKEND_URL not set");
+    process.exit(1);
+}
+
 
 export const config = {
     port,
+    dbConnect: process.env.DB_CONNECT,
 };
