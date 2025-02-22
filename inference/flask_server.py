@@ -13,7 +13,7 @@ def message():
     data = request.get_json()
     user_prompt = data.get('prompt') if data else None
     user_file = data.get('file') if data else None
-    user_request = data.get('file') if data else None
+    user_request = data.get('request') if data else None
 
     if not user_prompt:
         return {"error": "No prompt provided"}, 400
