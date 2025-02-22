@@ -1,4 +1,7 @@
-from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+tokenizer = AutoTokenizer.from_pretrained("deepseek-ai/DeepSeek-R1-Distill-Llama-8B")
+model = AutoModelForCausalLM.from_pretrained("deepseek-ai/DeepSeek-R1-Distill-Llama-8B")
 
 print("Python script is running!")
 
@@ -11,13 +14,9 @@ query = f"Analyze this network request for vulnerabilities and quality issues. L
 messages = [
     {"role": "user", "content": query},
 ]
-# Use a pipeline as a high-level helper
-from transformers import pipeline
 
-messages = [
-    {"role": "user", "content": "Who are you?"},
-]
-pipe = pipeline("text-generation", model="deepseek-ai/DeepSeek-R1-Distill-Llama-8B", trust_remote_code=True)
+inputs = tokenizer(query, return_tensors='pt')
+output = model.generate(**inputs, max_length=128)
+response = tokenizer.decode(output[0], skip_special_tokens=True)
 
-result = pipe(messages)
-print(result)
+print(response)
