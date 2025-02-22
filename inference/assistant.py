@@ -11,6 +11,9 @@ args:
 return value:
     string of fully generated text
 """
+
+
 def generate_response(prompt, local_file_path, request):
     # replace pass with your own code
-    pass
+    print("Prompt:", prompt)
+    return "hes"

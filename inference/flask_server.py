@@ -1,11 +1,12 @@
 from flask import Flask, request, Response, stream_with_context
 import time
 
-from inference.assistant import generate_response
+from assistant import generate_response
 
 app = Flask(__name__)
 
 next_file_idx = 0
+
 
 @app.route('/message', methods=['POST'])
 def message():
@@ -23,14 +24,15 @@ def message():
 
     file_path = None
     if user_file:
-        file_path = f"/tmp/file{next_file_idx}"
+        hash = str(time.time()).replace(".", "")
+        file_path = f"/tmp/file{ hash }.txt"
         with open(file_path, "w") as f:
             f.write(user_file)
-            next_file_idx += 1
 
     # Return a streaming response using the generator function
     response_text = generate_response(user_prompt, file_path, user_request)
     return response_text, 200, {'Content-Type': 'text/plain'}
+
 
 if __name__ == '__main__':
     app.run(debug=True)
