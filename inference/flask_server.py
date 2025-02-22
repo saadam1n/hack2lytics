@@ -24,6 +24,7 @@ def message():
     session_id = data.get('session') 
     user_prompt = data.get('prompt') 
     user_file = data.get('file') if data else None
+    user_file_ext = data.get('file_ext') if data else None
     user_request = data.get('request') if data else None
 
     if not user_prompt:
@@ -32,7 +33,7 @@ def message():
     file_path = None
     if user_file:
         hash = str(time.time()).replace(".", "")
-        file_path = f"/tmp/file{ hash }.txt"
+        file_path = f"/tmp/file{ hash }.{user_file_ext}"
         with open(file_path, "w") as f:
             f.write(user_file)
 
