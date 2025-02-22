@@ -1,12 +1,10 @@
 from flask import Flask, request, Response, stream_with_context
 import time
+import os
 
 from assistant import generate_response
 
 app = Flask(__name__)
-
-next_file_idx = 0
-
 
 @app.route('/message', methods=['POST'])
 def message():
@@ -31,6 +29,12 @@ def message():
 
     # Return a streaming response using the generator function
     response_text = generate_response(user_prompt, file_path, user_request)
+
+
+    # wipe ass after taking a shit
+    if user_file:
+        os.remove(file_path)
+
     return response_text, 200, {'Content-Type': 'text/plain'}
 
 
