@@ -1,5 +1,7 @@
 from transformers import pipeline
 
+print("Python script is running!")
+
 # Example usage
 with open("request.txt", "r") as f:
     request_to_analyze = f.read()
