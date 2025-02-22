@@ -1,6 +1,7 @@
 from flask import Flask, request, Response, stream_with_context
 import time
 import os
+import json
 
 from assistant import generate_response, create_thread_id
 
@@ -9,7 +10,8 @@ app = Flask(__name__)
 @app.route("/create_thread", methods="POST")
 def create_thread():
     id = create_thread_id()
-    return str(id), 200, {'Content-Type': 'text/plain'}
+    response_data = {"id": str(id)}
+    return json.dumps(response_data), 200, {'Content-Type': 'text/json'}
 
 
 @app.route('/message', methods=['POST'])
@@ -24,9 +26,6 @@ def message():
     if not user_prompt:
         return {"error": "No prompt provided"}, 400
 
-    if not user_file and not user_request:
-        return {"error": "Neither file or request provided"}, 400
-
     file_path = None
     if user_file:
         hash = str(time.time()).replace(".", "")
@@ -34,14 +33,25 @@ def message():
         with open(file_path, "w") as f:
             f.write(user_file)
 
+    request_path = None
+    if user_file:
+        hash = f"{str(time.time()).replace(".", "")}-request"
+        request_path = f"/tmp/file{ hash }.txt"
+        with open(request_path, "w") as f:
+            f.write(user_request)
+
     # Return a streaming response using the generator function
-    response_text = generate_response(session_id, user_prompt, file_path, user_request)
+    response_text = generate_response(session_id, user_prompt, file_path, request_path)
 
     # wipe ass after taking a shit
     if user_file:
         os.remove(file_path)
 
-    return response_text, 200, {'Content-Type': 'text/plain'}
+    if user_request:
+        os.remove(request_path)
+
+    response_data = {"id": str(response_text)}
+    return response_data, 200, {'Content-Type': 'text/plain'}
 
 
 if __name__ == '__main__':
