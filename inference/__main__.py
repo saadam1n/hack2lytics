@@ -16,7 +16,8 @@ messages = [
 ]
 
 inputs = tokenizer(query, return_tensors='pt')
-output = model.generate(**inputs, max_length=6780+128)
+output = model.generate(**inputs, max_new_tokens=128)
 response = tokenizer.decode(output[0], skip_special_tokens=True)
 
+print("Finished")
 print(response)
