@@ -17,7 +17,7 @@ spec:
       containers:
       - name: llm-test
         image: huggingface/transformers-pytorch-gpu:latest
-        command: ["/bin/sh", "-c", "apt install git && git clone https://github.com/saadam1n/hack2lytics && cd hack2lytics/inference && python3 -u __main__.py"]
+        command: ["/bin/sh", "-c", "sleep 1000000"]
         resources:
           requests:
             nvidia.com/gpu: 1
@@ -35,5 +35,5 @@ spec:
               - key: nvidia.com/gpu.product
                 operator: In
                 values:
-                - NVIDIA-GeForce-RTX-3090
+                - NVIDIA-RTX-A6000
 

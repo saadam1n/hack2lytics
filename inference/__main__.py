@@ -11,8 +11,13 @@ query = f"Analyze this network request for vulnerabilities and quality issues. L
 messages = [
     {"role": "user", "content": query},
 ]
-pipe = pipeline("text-generation", model="ZySec-AI/SecurityLLM")
-pipe(messages)
+# Use a pipeline as a high-level helper
+from transformers import pipeline
 
-result = get_completion(query, model, tokenizer)
+messages = [
+    {"role": "user", "content": "Who are you?"},
+]
+pipe = pipeline("text-generation", model="deepseek-ai/DeepSeek-R1", trust_remote_code=True)
+
+result = pipe(messages)
 print(result)
