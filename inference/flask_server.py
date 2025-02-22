@@ -7,7 +7,7 @@ from assistant import generate_response, create_thread_id
 
 app = Flask(__name__)
 
-@app.route("/create_thread", methods="POST")
+@app.route("/create_thread", methods=["POST"])
 def create_thread():
     id = create_thread_id()
     response_data = {"id": str(id)}
@@ -35,8 +35,8 @@ def message():
 
     request_path = None
     if user_file:
-        hash = f"{str(time.time()).replace(".", "")}-request"
-        request_path = f"/tmp/file{ hash }.txt"
+        hash = str(time.time()).replace(".", "")
+        request_path = f"/tmp/file{ hash }-request.txt"
         with open(request_path, "w") as f:
             f.write(user_request)
 
