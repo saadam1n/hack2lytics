@@ -94,7 +94,6 @@ ready(async () => {
  */
 async function process(): Promise<void> {
     const request_logs = await prepareHAR();
-    console.log(request_logs);
     const codeFile = fileInputCode?.files?.[0];
     const prompt = textField?.innerText ?? "<no prompt>";
 
@@ -268,6 +267,5 @@ async function sendMessage(sessionid: string, file: File | undefined, prompt: st
             "Content-Type": "multipart/form-data",
         },
     });
-    console.log(resp.data);
     return resp.data.id;
 }
