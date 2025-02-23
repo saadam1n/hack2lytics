@@ -232,6 +232,11 @@ async function prepareHAR(): Promise<string> {
             str += entry.request.url + "\n";
             str += entry.request.method + "\n";
 
+            str += "RESPONSEHEADERS\n";
+            for (const header of response.headers) {
+                str += header.name + ": " + header.value.slice(0, 100) + "\n";
+            }
+
             if (entry?.request?.postData?.text) {
                 str += "REQUEST SAMPLE\n";
                 str += entry.request.postData.text.slice(0, 1000) + "\n";
