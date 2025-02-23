@@ -4,7 +4,8 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: #323d48;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .header {
@@ -40,7 +41,8 @@ body {
   flex-direction: column;
   gap: 10px;
   padding: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   .user-msg,
   .bot-msg {
@@ -163,7 +165,7 @@ body {
     transform: translate(-50%, -50%);
     max-width: 300px;
     max-height: 300px;
-    overflow: scroll;
+    overflow: hidden;
 
     label {
       color: #ffffff;
