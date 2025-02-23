@@ -8,13 +8,13 @@ from openai import Client
 app = Flask(__name__)
 with open("inference/api_key.txt", "r") as api:
     api_key = api.read()
-    client = Client(api_key = api_key)
+    client = Client(api_key=api_key)
 
 assistant = client.beta.assistants.create(
-  name='Code Assistant Agent',
-  instructions="As a top-tier web developement Cybersecurity AI, you are adept at analyzing potential vulnerabilities in API calls. You will analyze the Website Source Code file attached for exposure of sensitive data, security vulnerabilities, and compliance with best practices (e.g., OWASP, GDPR). Find all serious vulnerabilities and exploits while prioritizinge glaring issues. Do not hallucinate. List at most four key points and reccomendations and keep it concise.",
-  model="gpt-4o-mini",
-  tools=[{"type": "file_search"}]
+    name='Code Assistant Agent',
+    instructions="As a top-tier web developement Cybersecurity AI, you are adept at analyzing potential vulnerabilities in API calls. You will analyze the Website Source Code file attached for exposure of sensitive data, security vulnerabilities, and compliance with best practices (e.g., OWASP, GDPR). Find all serious vulnerabilities and exploits while prioritizinge glaring issues. Do not hallucinate. List at most four key points and reccomendations and keep it concise.",
+    model="gpt-4o-mini",
+    tools=[{"type": "file_search"}]
 )
 
 
@@ -29,8 +29,8 @@ def create_thread():
 def message():
     # Get JSON data from the request
     data = request.get_json()
-    session_id = data.get('session') 
-    user_prompt = data.get('prompt') 
+    session_id = data.get('session')
+    user_prompt = data.get('prompt')
     user_file = data.get('file') if data else None
     user_file_ext = data.get('file_ext') if data else None
     user_request = data.get('request') if data else None
@@ -46,14 +46,18 @@ def message():
             f.write(user_file)
 
     request_path = None
-    if user_file:
+    if user_request:
         hash = str(time.time()).replace(".", "")
         request_path = f"/tmp/file{ hash }-request.txt"
         with open(request_path, "w") as f:
             f.write(user_request)
 
     # Return a streaming response using the generator function
-    response_text = generate_response(client, assistant.id, session_id, user_prompt, file_path, request_path)
+    print("Generating response")
+    print("File path: ", file_path)
+    print("Request path: ", request_path)
+    response_text = generate_response(
+        client, assistant.id, session_id, user_prompt, file_path, request_path)
 
     # wipe ass after taking a shit
     if user_file:

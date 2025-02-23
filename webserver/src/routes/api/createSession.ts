@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { v4 } from "uuid";
 import { SessionModel } from "../../db/init";
+import { makeNewSession } from "../../callers/makeNewSession";
 
 export const createSession = async (req: Request, res: Response): Promise<void> => {
-    const newUserId = "123"; //await makeNewSession();
+    const newUserId = await makeNewSession();
     const newSessionId = v4();
 
     try {
@@ -12,6 +13,7 @@ export const createSession = async (req: Request, res: Response): Promise<void> 
             userid: newUserId,
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24) // 24 hours
         });
+
         res.status(200).send({ id: newSessionId });
     }
     catch (error) {
