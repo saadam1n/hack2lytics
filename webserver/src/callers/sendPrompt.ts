@@ -15,7 +15,7 @@ export async function sendPrompt(userid: string, prompt: string, file: CodeFile 
         prompt: prompt,
         request: web_request
     };
-    if (file !== null) {
+    if (file) {
         data['file'] = file.content.toString();
         data['file_ext'] = file.extension;
     }
