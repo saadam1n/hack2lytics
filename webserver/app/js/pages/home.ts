@@ -16,6 +16,9 @@ let modalClose: HTMLButtonElement | null = null;
 let chatDiv: HTMLDivElement | null = null;
 let attachedIndicator: HTMLParagraphElement | null = null;
 
+
+const INITIAL_PROMPT = `\n\n# Using the AI Assistant\n\n- **Engage and Upload**: Start with a greeting and upload relevant files (code or logs) for analysis. \n\n- **Ask Specific Questions**: Clearly identify what you need, e.g., *\"What vulnerabilities are in this code?\"*\n\n- **Review and Implement**: Check the AI's findings and apply the recommendations to enhance your security.\nLet me know if you need anything else!`;
+
 ready(async () => {
     const sessionid_response = await axios.get("/api/createSession");
     sessionid = sessionid_response.data.id;
@@ -37,7 +40,7 @@ ready(async () => {
     if (fileInputCode) fileInputCode.value = "";
     if (fileInputLogs) fileInputLogs.value = "";
 
-    await createChatMessage(false, "Upload a file to begin", false, true);
+    await createChatMessage(false, INITIAL_PROMPT, false, true);
 
     fileInputLogs?.addEventListener("change", () => {
         if (attachedIndicator)
