@@ -208,15 +208,17 @@ async function prepareHAR(): Promise<string> {
         };
     });
     const parsed = JSON.parse(content);
-    let entries = parsed.log.entries;
+    const entries = parsed.log.entries;
 
     const okEntries: string[] = [];
 
     //cap entries to 100 for now
-    entries = entries.slice(0, 100);
+    let usedEntries = 0;
 
     for (const entry of entries) {
         const response = entry.response;
+
+        if (usedEntries >= 100) break;
 
         let content_type = "";
         for (const header of response.headers) {
@@ -227,6 +229,7 @@ async function prepareHAR(): Promise<string> {
             }
         }
         if (content_type.includes("application/json")) {
+            usedEntries++;
             let str = "REQUESTSTART\n";
             str += "REQUESTURL\n";
             str += entry.request.url + "\n";
