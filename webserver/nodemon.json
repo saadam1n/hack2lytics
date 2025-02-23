@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "ext": "html,css,json,png,ts",
+  "exec": "npm run build-server && npm start",
+  "delay": 1500
+}
