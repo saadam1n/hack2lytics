@@ -49,11 +49,10 @@ def generate_response(client, session_id, prompt, local_file_path, local_request
     if prompt:
         user_prompt = prompt
     client.beta.threads.messages.create(
-            thread_id=session_id
+            thread_id=session_id,
             role="user",
             content=user_prompt,
-            attachments=attachments_lst
-        )
+            attachments=attachments_lst)
 
     with client.beta.threads.runs.stream(
         thread_id=session_id,
