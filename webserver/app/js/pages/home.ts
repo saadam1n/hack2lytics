@@ -17,7 +17,7 @@ let chatDiv: HTMLDivElement | null = null;
 let attachedIndicator: HTMLParagraphElement | null = null;
 
 
-const INITIAL_PROMPT = `\n\n# Using the AI Assistant\n\n- **Engage and Upload**: Start with a greeting and upload relevant files (code or logs) for analysis. \n\n- **Ask Specific Questions**: Clearly identify what you need, e.g., *\"What vulnerabilities are in this code?\"*\n\n- **Review and Implement**: Check the AI's findings and apply the recommendations to enhance your security.\n\nLet me know if you need anything else!`;
+const INITIAL_PROMPT = `\n\n# Using the AI Assistant\n\n- **Engage and Upload**: Start with a greeting and upload relevant files (code or logs) for analysis. \n\n- **Ask Specific Questions**: Clearly identify what you need, e.g., *\"What vulnerabilities are in this code?\"*\n\n- **Review and Implement**: Check the AI's findings and apply the recommendations to enhance your security.`;
 
 ready(async () => {
     const sessionid_response = await axios.get("/api/createSession");
