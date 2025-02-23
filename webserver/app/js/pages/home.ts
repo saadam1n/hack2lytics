@@ -37,6 +37,8 @@ ready(async () => {
     if (fileInputCode) fileInputCode.value = "";
     if (fileInputLogs) fileInputLogs.value = "";
 
+    await createChatMessage(false, "Upload a file to begin", false, true);
+
     fileInputLogs?.addEventListener("change", () => {
         if (attachedIndicator)
             attachedIndicator.innerText = attachedIndicator?.innerText + " +" + fileInputLogs?.files?.[0]?.name;
@@ -92,6 +94,7 @@ ready(async () => {
  */
 async function process(): Promise<void> {
     const request_logs = await prepareHAR();
+    console.log(request_logs);
     const codeFile = fileInputCode?.files?.[0];
     const prompt = textField?.innerText ?? "<no prompt>";
 
@@ -257,7 +260,7 @@ async function sendMessage(sessionid: string, file: File | undefined, prompt: st
     formData.append("sessionid", sessionid);
     if (file)
         formData.append("file", file);
-    formData.append("prompt", prompt);
+    formData.append("prompt", prompt + ".");
     formData.append("web_request", request);
 
     const resp = await axios.post("/api/sendMessage", formData, {

@@ -47,7 +47,7 @@ def generate_response(client, assistant_id, session_id, prompt, local_file_path,
     print(attachments_lst)
     # Create a thread and attach the file to the message
     user_prompt = "Analyze this source code for any vulnerabilities"
-    if prompt:
+    if prompt or prompt == ".":
         user_prompt = prompt
     client.beta.threads.messages.create(
         thread_id=session_id,
