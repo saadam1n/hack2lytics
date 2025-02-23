@@ -29,7 +29,7 @@ class EventHandler(AssistantEventHandler):
         string_buffer.write(message_content.value)
 
 
-def generate_response(client, session_id, prompt, local_file_path, local_request_path):
+def generate_response(client, assistant_id, session_id, prompt, local_file_path, local_request_path):
     # replace pass with your own code
     global string_buffer
     string_buffer = io.StringIO()
@@ -56,7 +56,7 @@ def generate_response(client, session_id, prompt, local_file_path, local_request
 
     with client.beta.threads.runs.stream(
         thread_id=session_id,
-        assistant_id=session_id,
+        assistant_id=assistant_id,
         event_handler=EventHandler(),
         temperature=.8,
         max_prompt_tokens=100000,
