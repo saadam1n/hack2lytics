@@ -13,19 +13,16 @@ return value:
     string of fully generated text
 """
 import io
-from typing_extensions import override
 from openai import AssistantEventHandler
 
+
 class EventHandler(AssistantEventHandler):
-    @override
     def on_text_created(self, text) -> None:
         string_buffer.write(f"\nassistant > ")
 
-    @override
     def on_tool_call_created(self, tool_call):
         string_buffer.write("\nassistant > " + tool_call.type + "\n")
 
-    @override
     def on_message_done(self, message) -> None:
         # print a citation to the file searched
         message_content = message.content[0].text
@@ -41,8 +38,9 @@ def generate_response(client, assistant_id, session_id, prompt, local_file_path,
         if file:
             try:
                 message_file = client.files.create(
-                file=open(file, "rb"), purpose="assistants")
-                attachments_lst.append({ "file_id": message_file.id, "tools": [{"type": "file_search"}] })
+                    file=open(file, "rb"), purpose="assistants")
+                attachments_lst.append(
+                    {"file_id": message_file.id, "tools": [{"type": "file_search"}]})
             except:
                 print("Invalid file type")
                 return -1
@@ -52,10 +50,10 @@ def generate_response(client, assistant_id, session_id, prompt, local_file_path,
     if prompt:
         user_prompt = prompt
     client.beta.threads.messages.create(
-            thread_id=session_id,
-            role="user",
-            content=user_prompt,
-            attachments=attachments_lst)
+        thread_id=session_id,
+        role="user",
+        content=user_prompt,
+        attachments=attachments_lst)
 
     with client.beta.threads.runs.stream(
         thread_id=session_id,
@@ -64,14 +62,16 @@ def generate_response(client, assistant_id, session_id, prompt, local_file_path,
         temperature=.8,
         max_prompt_tokens=100000,
         max_completion_tokens=20000
-        ) as stream:
+    ) as stream:
         stream.until_done()
     result = string_buffer.getvalue()
     return result
 
+
 """
 Creates a new thread id and returns the OpenAI thread id
 """
+
+
 def create_thread_id(client):
     return client.beta.threads.create(messages=[]).id
-    
