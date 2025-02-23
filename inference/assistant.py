@@ -12,15 +12,64 @@ args:
 return value:
     string of fully generated text
 """
+import io
+class EventHandler(AssistantEventHandler):
+    @override
+    def on_text_created(self, text) -> None:
+        string_buffer.write(f"\nassistant > ")
+
+    @override
+    def on_tool_call_created(self, tool_call):
+        string_buffer.write("\nassistant > " + tool_call.type + "\n")
+
+    @override
+    def on_message_done(self, message) -> None:
+        # print a citation to the file searched
+        message_content = message.content[0].text
+        string_buffer.write(message_content.value)
 
 
-def generate_response(session_id, prompt, local_file_path, local_request_path):
+def generate_response(client, session_id, prompt, local_file_path, local_request_path):
     # replace pass with your own code
-    print("Prompt:", prompt)
-    return "hes"
+    global string_buffer
+    string_buffer = io.StringIO()
+    attachments_lst = []
+    for file in [local_file_path, local_request_path]:
+        if file:
+            try:
+                message_file = client.files.create(
+                file=open(file, "rb"), purpose="assistants")
+                attachments_lst.append({ "file_id": message_file.id, "tools": [{"type": "file_search"}] })
+            except:
+                print("Invalid file type")
+                return -1
+    print(attachments_lst)
+    # Create a thread and attach the file to the message
+    user_prompt = "Analyze this source code for any vulnerabilities"
+    if prompt:
+        user_prompt = prompt
+    client.beta.threads.messages.create(
+            thread_id=session_id
+            role="user",
+            content=user_prompt,
+            attachments=attachments_lst
+        )
+
+    with client.beta.threads.runs.stream(
+        thread_id=session_id,
+        assistant_id=session_id,
+        event_handler=EventHandler(),
+        temperature=.8,
+        max_prompt_tokens=100000,
+        max_completion_tokens=20000
+        ) as stream:
+        stream.until_done()
+    result = string_buffer.getvalue()
+    return result
 
 """
 Creates a new thread id and returns the OpenAI thread id
 """
-def create_thread_id():
-    pass
+def create_thread_id(client):
+    return client.beta.threads.create(messages=[]).id
+    

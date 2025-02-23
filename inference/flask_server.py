@@ -4,8 +4,11 @@ import os
 import json
 
 from assistant import generate_response, create_thread_id
-
+from openai import Client
 app = Flask(__name__)
+with open("inference/api_key.txt", "r") as api:
+    api_key = api.read()
+    client = Client(api_key = api_key)
 
 @app.route("/create_thread", methods=["POST"])
 def create_thread():
@@ -41,7 +44,7 @@ def message():
             f.write(user_request)
 
     # Return a streaming response using the generator function
-    response_text = generate_response(session_id, user_prompt, file_path, request_path)
+    response_text = generate_response(client, session_id, user_prompt, file_path, request_path)
 
     # wipe ass after taking a shit
     if user_file:
