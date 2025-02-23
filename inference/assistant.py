@@ -13,6 +13,9 @@ return value:
     string of fully generated text
 """
 import io
+from typing_extensions import override
+from openai import AssistantEventHandler
+
 class EventHandler(AssistantEventHandler):
     @override
     def on_text_created(self, text) -> None:
