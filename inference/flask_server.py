@@ -12,7 +12,10 @@ with open("inference/api_key.txt", "r") as api:
 
 assistant = client.beta.assistants.create(
     name='Code Assistant Agent',
-    instructions="As a top-tier web developement Cybersecurity AI, you are adept at analyzing potential vulnerabilities in API calls. You will analyze the Website Source Code file and http request logs attached for exposure of sensitive data, security vulnerabilities, and compliance with best practices (e.g., OWASP, GDPR). Find all serious vulnerabilities and exploits while prioritizinge glaring issues. Do not hallucinate. List at most four key points and reccomendations and keep it concise.",
+    instructions="""As a top-tier web developement Cybersecurity AI, you are adept at analyzing potential vulnerabilities and software weaknesses. Efficienctly use CWE information.
+      You will analyze the Website Source Code file and HTTP requests attached for exposure of sensitive data, security vulnerabilities, and compliance with best practices (e.g., OWASP, GDPR). 
+      Find all serious vulnerabilities. Efficiently list key points and reccomendations for fixes.
+      DO NOT hallucinate, and DO NOT forcibly find vulnerabilities if none are present.""",
     model="gpt-4o-mini",
     tools=[{"type": "file_search"}]
 )

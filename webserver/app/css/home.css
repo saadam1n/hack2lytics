@@ -60,10 +60,11 @@ body {
       align-items: left;
       flex-direction: column;
       gap: 4px;
+      overflow: hidden;
     }
 
     span {
-      max-width: 40vw;
+      max-width: 60vw;
       display: flex;
       color: white;
       font-family: sans-serif;
@@ -134,8 +135,15 @@ body {
     display: flex;
     min-height: 50px;
     max-height: 100px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     padding: 4px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  #text-entry::-webkit-scrollbar {
+    display: none;
   }
 
   #send-button {

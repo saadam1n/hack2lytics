@@ -103,6 +103,13 @@ async function process(): Promise<void> {
     const hasFile = codeFile != null || request_logs != "";
     await createChatMessage(true, prompt, hasFile);
 
+
+    //scroll to the bottom
+    chatDiv?.scrollTo({
+        top: chatDiv.scrollHeight,
+        behavior: "smooth",
+    });
+
     //clear the text field
     if (textField) textField.innerHTML = "";
 
@@ -234,6 +241,11 @@ async function prepareHAR(): Promise<string> {
             str += "REQUESTURL\n";
             str += entry.request.url + "\n";
             str += entry.request.method + "\n";
+
+            str += "REQUESTHEADERS\n";
+            for (const header of entry.request.headers) {
+                str += header.name + ": " + header.value + "\n";
+            }
 
             str += "RESPONSEHEADERS\n";
             for (const header of response.headers) {

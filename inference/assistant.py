@@ -13,6 +13,7 @@ return value:
     string of fully generated text
 """
 import io
+import os
 from openai import AssistantEventHandler
 
 
@@ -47,7 +48,7 @@ def generate_response(client, assistant_id, session_id, prompt, local_file_path,
     print(attachments_lst)
     # Create a thread and attach the file to the message
     user_prompt = "Analyze this source code for any vulnerabilities"
-    if prompt or prompt == ".":
+    if prompt and prompt != ".":
         user_prompt = prompt
     client.beta.threads.messages.create(
         thread_id=session_id,
@@ -60,7 +61,7 @@ def generate_response(client, assistant_id, session_id, prompt, local_file_path,
         assistant_id=assistant_id,
         event_handler=EventHandler(),
         temperature=.8,
-        max_prompt_tokens=100000,
+        max_prompt_tokens=130000,
         max_completion_tokens=20000
     ) as stream:
         stream.until_done()
@@ -74,4 +75,10 @@ Creates a new thread id and returns the OpenAI thread id
 
 
 def create_thread_id(client):
+    current_directory = os.getcwd()
+    message_file = client.files.create(
+        file=open(os.path.join(current_directory, "Top-25-Most-Dangerous-Software-Weaknesses-1.pdf"), "rb"), purpose="assistants")
+
+    # Create a thread and attach the file to the message
+
     return client.beta.threads.create(messages=[]).id
