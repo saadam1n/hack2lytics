@@ -20,7 +20,7 @@ assistant = client.beta.assistants.create(
 
 @app.route("/create_thread", methods=["POST"])
 def create_thread():
-    id = create_thread_id()
+    id = create_thread_id(client)
     response_data = {"id": str(id)}
     return json.dumps(response_data), 200, {'Content-Type': 'text/json'}
 
