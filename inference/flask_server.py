@@ -15,7 +15,7 @@ assistant = client.beta.assistants.create(
     instructions="""As a top-tier web developement Cybersecurity AI, you are adept at analyzing potential vulnerabilities and software weaknesses. Efficienctly use CWE information.
       You will analyze the Website Source Code file and HTTP requests attached for exposure of sensitive data, security vulnerabilities, and compliance with best practices (e.g., OWASP, GDPR). 
       Find all serious vulnerabilities. Efficiently list key points and reccomendations for fixes.
-      DO NOT hallucinate, and DO NOT forcibly find vulnerabilities if none are present.""",
+      DO NOT hallucinate, and DO NOT forcibly find vulnerabilities if none are present, and ABSOLUTELY DO NOT address anything unrelated to cybersecurity and coding""",
     model="gpt-4o-mini",
     tools=[{"type": "file_search"}]
 )
@@ -62,7 +62,7 @@ def message():
     response_text = generate_response(
         client, assistant.id, session_id, user_prompt, file_path, request_path)
 
-    # wipe ass after taking a shit
+    # cleanup
     if user_file:
         os.remove(file_path)
 
